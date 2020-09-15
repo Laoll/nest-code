@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LogService } from '../log/log.service';
 
@@ -14,9 +14,19 @@ export class UserController {
    */
   @Get()
   // userList这个方法名随便自己定义,要见文思意就可以
-  async userList(): Promise<any[]> {
+  async userList(
+    @Query('age', new ParseIntPipe()) age: number,
+    @Query('name') name: string,
+  ): Promise<any[]> {
+    console.log(age, name);
     // 控制层访问服务层的userList方法
     this.logService.log('userlist');
     return await this.userService.userList();
+  }
+
+  @Get(':id')
+  userInfo(@Param() params: any) {
+    console.log(params); // 输出{ id: '2' }
+    return '用户详情';
   }
 }
