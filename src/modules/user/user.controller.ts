@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  Request,
+  Response,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { LogService } from '../log/log.service';
 
@@ -8,6 +16,21 @@ export class UserController {
     private readonly userService: UserService,
     private readonly logService: LogService,
   ) {}
+
+  @Get()
+  index(@Request() req) {
+    console.log(req.cookies.name, '当前的cookie');
+    console.log(req.session);
+    return '主页';
+  }
+
+  @Get('login')
+  login(@Response() res, @Request() req: { [key: string]: any }) {
+    // 如果使使用了res就不能使用return，必须使用send
+    res.cookie('name', 'hello', { maxAge: 1000 * 5, httpOnly: true });
+    req.session.name = 'hello';
+    res.send('登录页面');
+  }
 
   /**
    * @Get([path])当前的path会拼接到@Controller('user')到里面user的路径后面，不写就表示为空的
