@@ -4,6 +4,8 @@ import { AppModule } from './app.module';
 // import { LogMiddleware } from './middlewares/log.middleware';
 import { test1MiddleWares } from './middlewares/test';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
+import { ValidationPipe } from './pipes/validation/validation.pipe';
+import { TransformInterceptor } from './interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +13,8 @@ async function bootstrap() {
   app.use(test1MiddleWares());
   // app.useGlobalGuards(new AuthGuard());
   // app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();

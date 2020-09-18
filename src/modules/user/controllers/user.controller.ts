@@ -17,6 +17,7 @@ import { UserEntity } from '../entities/user.entity';
 import { UserService } from '../user.service';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { LoggingInterceptor } from '../../../interceptors/logging.interceptor';
+import { CreateUserTdo } from '../../../dto/create.user.dto';
 
 @Controller('user')
 @UseGuards(AuthGuard)
@@ -40,7 +41,7 @@ export class UserController {
   // }
 
   @Post()
-  async create(@Body() data: any) {
+  async create(@Body() data: CreateUserTdo) {
     return this.userService.create(data);
   }
 

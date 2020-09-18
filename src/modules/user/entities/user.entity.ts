@@ -1,6 +1,7 @@
 import { UserExtendEntity } from './user_extend.entity';
 import { PostEntity } from '../../post/post.entity';
 import { RoleEntity } from '../../role/role.entity';
+import { Exclude, Expose } from 'class-transformer';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -31,6 +32,7 @@ export class UserEntity {
   })
   username: string;
 
+  @Exclude()
   @Column({
     type: 'varchar',
     nullable: false,
@@ -39,6 +41,10 @@ export class UserEntity {
   })
   password: string;
 
+  @Expose()
+  isDelStr(): string {
+    return this.isDel ? '删除' : '正常';
+  }
   @Column('tinyint', {
     nullable: false,
     default: () => 0,

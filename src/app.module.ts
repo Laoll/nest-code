@@ -10,6 +10,8 @@ import { TagModule } from './modules/tag/tag.module';
 import { RoleModule } from './modules/role/role.module';
 import * as path from 'path';
 import { LogMiddleware } from './middlewares/log.middleware';
+import { ValidationPipe } from './pipes/validation/validation.pipe';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -36,7 +38,13 @@ import { LogMiddleware } from './middlewares/log.middleware';
     RoleModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
