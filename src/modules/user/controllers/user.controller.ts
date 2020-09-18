@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LogService } from '../../log/log.service';
 
@@ -15,9 +16,11 @@ import { UpdateResult } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserService } from '../user.service';
 import { AuthGuard } from 'src/guard/auth.guard';
+import { LoggingInterceptor } from '../../../interceptors/logging.interceptor';
 
 @Controller('user')
 @UseGuards(AuthGuard)
+@UseInterceptors(LoggingInterceptor)
 export class UserController {
   constructor(
     private readonly userService: UserService,
