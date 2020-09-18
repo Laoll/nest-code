@@ -7,14 +7,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { LogService } from '../../log/log.service';
 
 import { UpdateResult } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { UserService } from '../user.service';
+import { AuthGuard } from 'src/guard/auth.guard';
 
 @Controller('user')
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(
     private readonly userService: UserService,
