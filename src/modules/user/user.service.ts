@@ -26,10 +26,11 @@ export class UserService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const user = await queryRunner.manager.save(UserEntity, {
+      const user = queryRunner.manager.create(UserEntity, {
         username,
         password,
       });
+      await queryRunner.manager.save(UserEntity, user);
       await queryRunner.manager.save(UserExtendEntity, {
         mobile,
         address,

@@ -11,10 +11,19 @@ import {
   OneToMany,
   UpdateDateColumn,
   ManyToMany,
+  BeforeInsert,
 } from 'typeorm';
+import NodeAuth from 'node-auth0';
 
 @Entity({ name: 'user' })
 export class UserEntity {
+  @Exclude()
+  private nodeAuth: NodeAuth;
+
+  constructor() {
+    this.nodeAuth = new NodeAuth();
+  }
+
   @PrimaryGeneratedColumn({
     type: 'int',
     name: 'id',
@@ -86,4 +95,9 @@ export class UserEntity {
     role => role.user,
   )
   roles: RoleEntity[];
+
+  @BeforeInsert()
+  makePassword(): void {
+    this.password = this.nodeAuth.makePassword(this.password);
+  }
 }
