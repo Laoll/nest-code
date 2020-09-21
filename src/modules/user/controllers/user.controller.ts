@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -30,7 +32,8 @@ export class UserController {
 
   @Get()
   async userList(): Promise<UserEntity[]> {
-    return await this.userService.userList();
+    throw new HttpException('获取数据错误', HttpStatus.OK);
+    // return await this.userService.userList();
   }
 
   // @Post()
